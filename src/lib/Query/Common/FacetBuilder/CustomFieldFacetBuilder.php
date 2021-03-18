@@ -23,6 +23,11 @@ class CustomFieldFacetBuilder extends FacetBuilder
      */
     public $field;
 
+    /**
+     * @var boolean
+     */
+    public $missing = false;
+
     /** @var string[] */
     public $excludeTags;
 }

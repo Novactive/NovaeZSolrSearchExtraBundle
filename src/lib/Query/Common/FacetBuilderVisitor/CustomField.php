@@ -37,6 +37,24 @@ class CustomField extends FacetBuilderVisitor implements FacetFieldVisitor
     /**
      * {@inheritdoc}.
      */
+    protected function mapData(array $data)
+    {
+        $values = array();
+        for($i=0; $i< count($data); $i++) {
+            $key = $data[$i];
+            if ($key === null) {
+                $key = 'null';
+            }
+            $values[$key] = $data[$i+1];
+            $i++;
+        }
+
+        return $values;
+    }
+
+    /**
+     * {@inheritdoc}.
+     */
     public function canVisit(FacetBuilder $facetBuilder)
     {
         return $facetBuilder instanceof CustomFieldFacetBuilder;
@@ -61,6 +79,7 @@ class CustomField extends FacetBuilderVisitor implements FacetFieldVisitor
             'facet.field' => "{!ex={$excludeTags} key=${fieldId}}$facetBuilder->field",
             "f.{$facetBuilder->field}.facet.limit" => $facetBuilder->limit,
             "f.{$facetBuilder->field}.facet.mincount" => $facetBuilder->minCount,
+            "f.{$facetBuilder->field}.facet.missing"  => $facetBuilder->missing ? "true" : "false"
         ];
     }
 }
