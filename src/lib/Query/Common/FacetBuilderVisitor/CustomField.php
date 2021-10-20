@@ -75,11 +75,17 @@ class CustomField extends FacetBuilderVisitor implements FacetFieldVisitor
 
         $excludeTags = implode(',', $excludeTags);
 
-        return [
+        $facetParams = [
             'facet.field'                             => "{!ex={$excludeTags} key=${fieldId}}$facetBuilder->field",
             "f.{$facetBuilder->field}.facet.limit"    => $facetBuilder->limit,
             "f.{$facetBuilder->field}.facet.mincount" => $facetBuilder->minCount,
             "f.{$facetBuilder->field}.facet.missing"  => $facetBuilder->missing ? 'true' : 'false',
         ];
+
+        if(!empty($facetBuilder->excludeEntries)) {
+            $facetParams["f.{$facetBuilder->field}.facet.excludeTerms"] = implode(',', $facetBuilder->excludeEntries);
+        }
+
+        return $facetParams;
     }
 }
